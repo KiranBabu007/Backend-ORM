@@ -1,6 +1,8 @@
 import { Request,Response,Router,NextFunction } from "express"
 import EmployeeRepository from "../repositories/employee.repository"
 import EmployeeService from "../services/employee.service"
+import HttpException from "../exception/httpException"
+import { isEmail } from "../validators/emailValidator"
 
 
 class EmployeeController{
@@ -12,10 +14,19 @@ class EmployeeController{
         router.delete('/:id',this.deleteEmployee)
     }
 
-     createEmployee=async (req:Request,res:Response)=>{
+     createEmployee=async (req:Request,res:Response,next:NextFunction)=>{
+        try{
         const {email,name,age,address}=req.body
+        if(!isEmail(email)){
+            throw new Error('Add @')
+        }
         const newEmployee=await this.employeeService.createEmployee(email,name,age,address)
         res.status(201).send(newEmployee)
+        }catch(err){
+            console.log(err)
+            next(err)
+        }
+       
 
     }
 
@@ -29,15 +40,13 @@ class EmployeeController{
             const id =Number(req.params.id)
         const employee=await this.employeeService.getEmployeeById(id)
         if(!employee){
-            throw new Error('Employee not found')
+            throw new HttpException(400,'Employee not found')
         }
         res.status(201).send(employee)
         }
         catch(err){
-            res.status(404).send(400,"not found")
             console.error('Error:',err)
             next(err)
-            
         }
         
     }

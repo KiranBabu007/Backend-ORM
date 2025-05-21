@@ -8,14 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const httpException_1 = __importDefault(require("../exception/httpException"));
+const emailValidator_1 = require("../validators/emailValidator");
 class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
-        this.createEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { email, name, age, address } = req.body;
-            const newEmployee = yield this.employeeService.createEmployee(email, name, age, address);
-            res.status(201).send(newEmployee);
+        this.createEmployee = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { email, name, age, address } = req.body;
+                if (!(0, emailValidator_1.isEmail)(email)) {
+                    throw new Error('Add @');
+                }
+                const newEmployee = yield this.employeeService.createEmployee(email, name, age, address);
+                res.status(201).send(newEmployee);
+            }
+            catch (err) {
+                console.log(err);
+                next(err);
+            }
         });
         this.getAllEmployees = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const employees = yield this.employeeService.getAllEmployees();
@@ -26,12 +40,11 @@ class EmployeeController {
                 const id = Number(req.params.id);
                 const employee = yield this.employeeService.getEmployeeById(id);
                 if (!employee) {
-                    throw new Error('Employee not found');
+                    throw new httpException_1.default(400, 'Employee not found');
                 }
                 res.status(201).send(employee);
             }
             catch (err) {
-                res.send(400, "not found");
                 console.error('Error:', err);
                 next(err);
             }
