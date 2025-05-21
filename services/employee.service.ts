@@ -1,3 +1,4 @@
+import { CreateAddressDto } from "../dto/create-address.dto";
 import Address from "../entities/address.entity";
 import Employee from "../entities/employee.entity";
 import EmployeeRepository from "../repositories/employee.repository";
@@ -7,12 +8,17 @@ class EmployeeService {
     constructor(private employeeRepository: EmployeeRepository) {
     }
 
-    async createEmployee(email:string,name:string,age:number,address:Address): Promise<Employee> {
+    async createEmployee(email:string,name:string,age:number,address:CreateAddressDto): Promise<Employee> {
+
+        const newAddress= new Address()
+        newAddress.line1=address.line1
+        newAddress.pincode=Number(address.pincode)
         const newEmployee= new Employee();
-        newEmployee.name=name
+        newEmployee.address=newAddress
         newEmployee.email=email
+        newEmployee.name=name
         newEmployee.age=age
-        newEmployee.address=address
+        
         return this.employeeRepository.create(newEmployee)
     }
 

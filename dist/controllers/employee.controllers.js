@@ -13,22 +13,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const httpException_1 = __importDefault(require("../exception/httpException"));
-const emailValidator_1 = require("../validators/emailValidator");
+const class_transformer_1 = require("class-transformer");
+const class_validator_1 = require("class-validator");
+const create_employee_dto_1 = require("../dto/create-employee.dto");
 class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
         this.createEmployee = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const { email, name, age, address } = req.body;
-                if (!(0, emailValidator_1.isEmail)(email)) {
-                    throw new Error('Add @');
+                const createEmployeeDto = (0, class_transformer_1.plainToInstance)(create_employee_dto_1.CreateEmployeeDto, req.body);
+                const errors = yield (0, class_validator_1.validate)(createEmployeeDto);
+                if (errors.length > 0) {
+                    console.log(JSON.stringify(errors));
+                    throw new httpException_1.default(400, JSON.stringify(errors));
                 }
-                const newEmployee = yield this.employeeService.createEmployee(email, name, age, address);
-                res.status(201).send(newEmployee);
+                const savedEmployee = yield this.employeeService.createEmployee(createEmployeeDto.email, createEmployeeDto.name, createEmployeeDto.age, createEmployeeDto.address);
+                res.status(201).send(savedEmployee);
             }
-            catch (err) {
-                console.log(err);
-                next(err);
+            catch (error) {
+                next(error);
             }
         });
         this.getAllEmployees = (req, res) => __awaiter(this, void 0, void 0, function* () {

@@ -9,23 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddAddress1747819730178 = void 0;
-class AddAddress1747819730178 {
+exports.CreateDepartment1747842790707 = void 0;
+class CreateDepartment1747842790707 {
     constructor() {
-        this.name = 'AddAddress1747819730178';
+        this.name = 'CreateDepartment1747842790707';
     }
     up(queryRunner) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield queryRunner.query(`CREATE TABLE "address" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "line1" character varying NOT NULL, "pincode" integer NOT NULL, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`);
-            yield queryRunner.query(`ALTER TABLE "employee" ADD "age" integer NOT NULL`);
+            yield queryRunner.query(`CREATE TABLE "department" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "name" character varying NOT NULL, CONSTRAINT "PK_9a2213262c1593bffb581e382f5" PRIMARY KEY ("id"))`);
         });
     }
     down(queryRunner) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield queryRunner.query(`ALTER TABLE "employee" DROP COLUMN "age"`);
-            yield queryRunner.query(`DROP TABLE "address"`);
+            yield queryRunner.query(`DROP TABLE "department"`);
         });
     }
 }
-exports.AddAddress1747819730178 = AddAddress1747819730178;
-//# sourceMappingURL=1747819730178-add-address.js.map
+exports.CreateDepartment1747842790707 = CreateDepartment1747842790707;
+//# sourceMappingURL=1747842790707-create-department.js.map

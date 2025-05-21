@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const address_entity_1 = __importDefault(require("../entities/address.entity"));
 const employee_entity_1 = __importDefault(require("../entities/employee.entity"));
 class EmployeeService {
     constructor(employeeRepository) {
@@ -19,11 +20,14 @@ class EmployeeService {
     }
     createEmployee(email, name, age, address) {
         return __awaiter(this, void 0, void 0, function* () {
+            const newAddress = new address_entity_1.default();
+            newAddress.line1 = address.line1;
+            newAddress.pincode = Number(address.pincode);
             const newEmployee = new employee_entity_1.default();
-            newEmployee.name = name;
+            newEmployee.address = newAddress;
             newEmployee.email = email;
+            newEmployee.name = name;
             newEmployee.age = age;
-            newEmployee.address = address;
             return this.employeeRepository.create(newEmployee);
         });
     }

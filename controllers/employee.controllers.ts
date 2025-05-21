@@ -3,6 +3,9 @@ import EmployeeRepository from "../repositories/employee.repository"
 import EmployeeService from "../services/employee.service"
 import HttpException from "../exception/httpException"
 import { isEmail } from "../validators/emailValidator"
+import { plainToInstance } from "class-transformer"
+import { validate } from "class-validator"
+import { CreateEmployeeDto } from "../dto/create-employee.dto"
 
 
 class EmployeeController{
@@ -15,17 +18,23 @@ class EmployeeController{
     }
 
      createEmployee=async (req:Request,res:Response,next:NextFunction)=>{
-        try{
-        const {email,name,age,address}=req.body
-        if(!isEmail(email)){
-            throw new Error('Add @')
-        }
-        const newEmployee=await this.employeeService.createEmployee(email,name,age,address)
-        res.status(201).send(newEmployee)
-        }catch(err){
-            console.log(err)
-            next(err)
-        }
+           try {
+      const createEmployeeDto = plainToInstance(CreateEmployeeDto, req.body);
+      const errors = await validate(createEmployeeDto);
+      if (errors.length > 0) {
+        console.log(JSON.stringify(errors));
+        throw new HttpException(400, JSON.stringify(errors));
+      }
+      const savedEmployee = await this.employeeService.createEmployee(
+        createEmployeeDto.email,
+        createEmployeeDto.name,
+        createEmployeeDto.age,
+        createEmployeeDto.address
+      );
+      res.status(201).send(savedEmployee);
+    } catch (error) {
+      next(error);
+    }
        
 
     }
