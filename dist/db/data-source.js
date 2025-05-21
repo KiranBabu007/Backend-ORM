@@ -1,13 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const typeorm_1 = require("typeorm");
 const typeorm_naming_strategies_1 = require("typeorm-naming-strategies");
-const employee_entity_1 = __importDefault(require("../entities/employee.entity"));
-const address_entity_1 = __importDefault(require("../entities/address.entity"));
 const datasource = new typeorm_1.DataSource({
     type: "postgres",
     host: "localhost",
@@ -19,7 +14,7 @@ const datasource = new typeorm_1.DataSource({
     synchronize: false,
     logging: true,
     namingStrategy: new typeorm_naming_strategies_1.SnakeNamingStrategy,
-    entities: [employee_entity_1.default, address_entity_1.default],
+    entities: ["dist/entities/*.js"],
     migrations: ["dist/db/migrations/*.js"]
 });
 exports.default = datasource;

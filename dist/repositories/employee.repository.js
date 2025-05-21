@@ -20,7 +20,11 @@ class EmployeeRepository {
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.find();
+            return this.repository.find({
+                relations: {
+                    address: true
+                }
+            });
         });
     }
     findById(id) {
@@ -36,6 +40,11 @@ class EmployeeRepository {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.repository.delete({ id });
+        });
+    }
+    remove(employee) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repository.remove(employee);
         });
     }
 }

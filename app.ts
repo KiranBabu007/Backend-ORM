@@ -1,7 +1,8 @@
 import express from "express";
 import employeeRouter from "./routes/employee.router"
-import loggerMiddleware from "./loggerMiddleware";
+import loggerMiddleware from "./middlewares/loggerMiddleware";
 import datasource from "./db/data-source";
+import errorMiddleware from "./middlewares/errorMiddleware";
 
 const { Client } = require('pg');
 
@@ -10,6 +11,7 @@ server.use(express.json());
 server.use(loggerMiddleware);
 
 server.use("/employee",employeeRouter);
+server.use(errorMiddleware)
 
 server.get("/", (req, res) => {
   console.log(req.url);

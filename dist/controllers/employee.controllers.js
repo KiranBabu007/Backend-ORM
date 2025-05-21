@@ -13,18 +13,28 @@ class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
         this.createEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { email, name } = req.body;
-            const newEmployee = yield this.employeeService.createEmployee(email, name);
+            const { email, name, age, address } = req.body;
+            const newEmployee = yield this.employeeService.createEmployee(email, name, age, address);
             res.status(201).send(newEmployee);
         });
         this.getAllEmployees = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const employees = yield this.employeeService.getAllEmployees();
             res.status(201).send(employees);
         });
-        this.getEmployeeById = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const id = Number(req.params.id);
-            const employee = yield this.employeeService.getEmployeeById(id);
-            res.status(201).send(employee);
+        this.getEmployeeById = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = Number(req.params.id);
+                const employee = yield this.employeeService.getEmployeeById(id);
+                if (!employee) {
+                    throw new Error('Employee not found');
+                }
+                res.status(201).send(employee);
+            }
+            catch (err) {
+                res.send(400, "not found");
+                console.error('Error:', err);
+                next(err);
+            }
         });
         this.updateEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const id = Number(req.params.id);

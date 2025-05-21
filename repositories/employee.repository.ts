@@ -10,7 +10,11 @@ class EmployeeRepository{
     }
 
     async findAll():Promise<Employee[]>{
-        return this.repository.find()
+        return this.repository.find({
+            relations:{
+                address:true
+            }
+        })
     }
 
     async findById(id:number): Promise<Employee>{
@@ -21,8 +25,12 @@ class EmployeeRepository{
         await this.repository.save({id,...employee})
     }
 
-    async delete(id:number):Promise<void>{
+    async delete(id:number):Promise<void>{ 
         await this.repository.delete({id})
+    }
+
+    async remove(employee:Employee):Promise<void>{
+        await this.repository.remove(employee)
     }
 
 

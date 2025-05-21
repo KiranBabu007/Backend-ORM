@@ -17,11 +17,13 @@ class EmployeeService {
     constructor(employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-    createEmployee(email, name) {
+    createEmployee(email, name, age, address) {
         return __awaiter(this, void 0, void 0, function* () {
             const newEmployee = new employee_entity_1.default();
             newEmployee.name = name;
             newEmployee.email = email;
+            newEmployee.age = age;
+            newEmployee.address = address;
             return this.employeeRepository.create(newEmployee);
         });
     }
@@ -47,7 +49,11 @@ class EmployeeService {
     }
     deleteEmployee(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.employeeRepository.delete(id);
+            const employee = yield this.employeeRepository.findById(id);
+            if (employee) {
+                yield this.employeeRepository.remove(employee);
+            }
+            // await this.employeeRepository.delete(id)
         });
     }
 }

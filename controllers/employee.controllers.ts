@@ -1,4 +1,4 @@
-import { Request,Response,Router } from "express"
+import { Request,Response,Router,NextFunction } from "express"
 import EmployeeRepository from "../repositories/employee.repository"
 import EmployeeService from "../services/employee.service"
 
@@ -13,8 +13,8 @@ class EmployeeController{
     }
 
      createEmployee=async (req:Request,res:Response)=>{
-        const {email,name}=req.body
-        const newEmployee=await this.employeeService.createEmployee(email,name)
+        const {email,name,age,address}=req.body
+        const newEmployee=await this.employeeService.createEmployee(email,name,age,address)
         res.status(201).send(newEmployee)
 
     }
@@ -24,11 +24,25 @@ class EmployeeController{
         res.status(201).send(employees)
     }
 
-    getEmployeeById=async(req:Request,res:Response)=>{
-        const id =Number(req.params.id)
+    getEmployeeById=async(req:Request,res:Response,next:NextFunction)=>{
+        try{
+            const id =Number(req.params.id)
         const employee=await this.employeeService.getEmployeeById(id)
+        if(!employee){
+            throw new Error('Employee not found')
+        }
         res.status(201).send(employee)
+        }
+        catch(err){
+            res.status(404).send(400,"not found")
+            console.error('Error:',err)
+            next(err)
+            
+        }
+        
     }
+
+    
 
     updateEmployee=async(req:Request,res:Response)=>{
         const id =Number(req.params.id)

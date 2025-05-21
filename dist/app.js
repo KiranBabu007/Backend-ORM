@@ -14,13 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const employee_router_1 = __importDefault(require("./routes/employee.router"));
-const loggerMiddleware_1 = __importDefault(require("./loggerMiddleware"));
+const loggerMiddleware_1 = __importDefault(require("./middlewares/loggerMiddleware"));
 const data_source_1 = __importDefault(require("./db/data-source"));
+const errorMiddleware_1 = __importDefault(require("./middlewares/errorMiddleware"));
 const { Client } = require('pg');
 const server = (0, express_1.default)();
 server.use(express_1.default.json());
 server.use(loggerMiddleware_1.default);
 server.use("/employee", employee_router_1.default);
+server.use(errorMiddleware_1.default);
 server.get("/", (req, res) => {
     console.log(req.url);
     res.status(200).send("Hello world typescript");

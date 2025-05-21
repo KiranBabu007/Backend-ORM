@@ -9,14 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddAddress1747818761659 = void 0;
-class AddAddress1747818761659 {
+exports.AddAddress1747819730178 = void 0;
+class AddAddress1747819730178 {
     constructor() {
-        this.name = 'AddAddress1747818761659';
+        this.name = 'AddAddress1747819730178';
     }
     up(queryRunner) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield queryRunner.query(`CREATE TABLE "address" ("id" SERIAL NOT NULL, "line1" character varying NOT NULL, "pincode" integer NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`);
+            yield queryRunner.query(`CREATE TABLE "address" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "line1" character varying NOT NULL, "pincode" integer NOT NULL, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`);
             yield queryRunner.query(`ALTER TABLE "employee" ADD "age" integer NOT NULL`);
         });
     }
@@ -27,5 +27,5 @@ class AddAddress1747818761659 {
         });
     }
 }
-exports.AddAddress1747818761659 = AddAddress1747818761659;
-//# sourceMappingURL=1747818761659-add-address.js.map
+exports.AddAddress1747819730178 = AddAddress1747819730178;
+//# sourceMappingURL=1747819730178-add-address.js.map

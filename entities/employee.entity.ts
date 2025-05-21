@@ -1,5 +1,6 @@
-import {Column,Entity,PrimaryGeneratedColumn } from 'typeorm'
+import {Column,Entity,JoinColumn,OneToOne,PrimaryGeneratedColumn } from 'typeorm'
 import AbstractEntity from './abstract.entity';
+import Address from './address.entity';
 
 @Entity()
 class Employee extends AbstractEntity {
@@ -12,10 +13,16 @@ class Employee extends AbstractEntity {
     @Column()
     name: string;
 
-
-
     @Column()
     age: number;
+
+    @OneToOne(() => Address,(address)=>address.employee,{
+       cascade:true,
+       onDelete:'CASCADE'
+    })
+   
+    @JoinColumn()
+    address:Address
   }
   
   export default Employee;
