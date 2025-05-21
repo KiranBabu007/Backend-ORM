@@ -1,5 +1,6 @@
 
 
-class DepartmentRepositoty{
- 
+class DepartmentRepositity{
+
 }
+ 
