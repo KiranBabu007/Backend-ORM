@@ -1,5 +1,5 @@
 import express from "express";
-import employeeRouter from "./employee_router";
+import employeeRouter from "./routes/employee.router"
 import loggerMiddleware from "./loggerMiddleware";
 import datasource from "./db/data-source";
 
@@ -9,7 +9,7 @@ const server = express();
 server.use(express.json());
 server.use(loggerMiddleware);
 
-server.use("/employee", employeeRouter);
+server.use("/employee",employeeRouter);
 
 server.get("/", (req, res) => {
   console.log(req.url);

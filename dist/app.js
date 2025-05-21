@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const employee_router_1 = __importDefault(require("./employee_router"));
+const employee_router_1 = __importDefault(require("./routes/employee.router"));
 const loggerMiddleware_1 = __importDefault(require("./loggerMiddleware"));
-const data_source_1 = __importDefault(require("./data-source"));
+const data_source_1 = __importDefault(require("./db/data-source"));
 const { Client } = require('pg');
 const server = (0, express_1.default)();
 server.use(express_1.default.json());
