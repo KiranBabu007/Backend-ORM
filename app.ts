@@ -1,7 +1,7 @@
 import express from "express";
 import employeeRouter from "./employee_router";
 import loggerMiddleware from "./loggerMiddleware";
-import datasource from "./data-source";
+import datasource from "./db/data-source";
 
 const { Client } = require('pg');
 
