@@ -7,6 +7,7 @@ require("reflect-metadata");
 const typeorm_1 = require("typeorm");
 const typeorm_naming_strategies_1 = require("typeorm-naming-strategies");
 const employee_entity_1 = __importDefault(require("../entities/employee.entity"));
+const address_entity_1 = __importDefault(require("../entities/address.entity"));
 const datasource = new typeorm_1.DataSource({
     type: "postgres",
     host: "localhost",
@@ -15,10 +16,11 @@ const datasource = new typeorm_1.DataSource({
     username: "postgres",
     password: "postgres",
     extra: { max: 5, min: 2 },
-    synchronize: true,
-    logging: false,
+    synchronize: false,
+    logging: true,
     namingStrategy: new typeorm_naming_strategies_1.SnakeNamingStrategy,
-    entities: [employee_entity_1.default]
+    entities: [employee_entity_1.default, address_entity_1.default],
+    migrations: ["dist/db/migrations/*.js"]
 });
 exports.default = datasource;
 //# sourceMappingURL=data-source.js.map
