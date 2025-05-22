@@ -16,6 +16,7 @@ const httpException_1 = __importDefault(require("../exception/httpException"));
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const create_employee_dto_1 = require("../dto/create-employee.dto");
+const authorizationMiddleware_1 = require("../middlewares/authorizationMiddleware");
 class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
@@ -27,7 +28,7 @@ class EmployeeController {
                     console.log(JSON.stringify(errors));
                     throw new httpException_1.default(400, JSON.stringify(errors));
                 }
-                const savedEmployee = yield this.employeeService.createEmployee(createEmployeeDto.email, createEmployeeDto.name, createEmployeeDto.age, createEmployeeDto.address, createEmployeeDto.password);
+                const savedEmployee = yield this.employeeService.createEmployee(createEmployeeDto.email, createEmployeeDto.name, createEmployeeDto.age, createEmployeeDto.address, createEmployeeDto.password, createEmployeeDto.role);
                 res.status(201).send(savedEmployee);
             }
             catch (error) {
@@ -54,8 +55,8 @@ class EmployeeController {
         });
         this.updateEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const id = Number(req.params.id);
-            const { email, name } = req.body;
-            yield this.employeeService.updateEmployee(id, email, name);
+            const { email, name, role } = req.body;
+            yield this.employeeService.updateEmployee(id, email, name, role);
             res.status(200).send();
         });
         this.deleteEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -63,11 +64,11 @@ class EmployeeController {
             yield this.employeeService.deleteEmployee(id);
             res.status(200).send();
         });
-        router.get('/', this.getAllEmployees),
-            router.post('/', this.createEmployee),
-            router.get('/:id', this.getEmployeeById),
-            router.put('/:id', this.updateEmployee);
-        router.delete('/:id', this.deleteEmployee);
+        router.get('/', authorizationMiddleware_1.authorizationMiddleware, this.getAllEmployees),
+            router.post('/', authorizationMiddleware_1.authorizationMiddleware, this.createEmployee),
+            router.get('/:id', authorizationMiddleware_1.authorizationMiddleware, this.getEmployeeById),
+            router.put('/:id', authorizationMiddleware_1.authorizationMiddleware, this.updateEmployee);
+        router.delete('/:id', authorizationMiddleware_1.authorizationMiddleware, this.deleteEmployee);
     }
 }
 exports.default = EmployeeController;

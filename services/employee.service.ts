@@ -30,18 +30,24 @@ class EmployeeService {
     }
 
     async getEmployeeById(id:number):Promise<Employee>{
-        return this.employeeRepository.findById(id)
+        let employee=await this.employeeRepository.findById(id);
+        if(!employee){
+            throw new Error("Employee not found");
+        }
+        return employee;
+
     }
 
     async getEmployeeByEmail(email:string):Promise<Employee>{
         return this.employeeRepository.findByEmail(email)
     }
 
-    async updateEmployee(id:number,email:string,name:string){
+    async updateEmployee(id:number,email:string,name:string,role:EmployeeRole){
         const existingEmployee=await this.employeeRepository.findById(id);
         if(existingEmployee){
             existingEmployee.name=name || existingEmployee.name
             existingEmployee.email=email || existingEmployee.email
+            existingEmployee.role=role || existingEmployee.role
             await this.employeeRepository.update(id,existingEmployee)
         }
     }

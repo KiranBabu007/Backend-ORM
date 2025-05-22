@@ -6,15 +6,16 @@ import { isEmail } from "../validators/emailValidator"
 import { plainToInstance } from "class-transformer"
 import { validate } from "class-validator"
 import { CreateEmployeeDto } from "../dto/create-employee.dto"
+import { authorizationMiddleware } from "../middlewares/authorizationMiddleware"
 
 
 class EmployeeController{
     constructor(private employeeService:EmployeeService,router:Router) {
-        router.get('/',this.getAllEmployees),
-        router.post('/',this.createEmployee),
-        router.get('/:id',this.getEmployeeById),
-        router.put('/:id',this.updateEmployee)
-        router.delete('/:id',this.deleteEmployee)
+        router.get('/',authorizationMiddleware, this.getAllEmployees),
+        router.post('/',authorizationMiddleware,this.createEmployee),
+        router.get('/:id',authorizationMiddleware,this.getEmployeeById),
+        router.put('/:id',authorizationMiddleware,this.updateEmployee)
+        router.delete('/:id',authorizationMiddleware,this.deleteEmployee)
 
     }
 
@@ -67,8 +68,8 @@ class EmployeeController{
 
     updateEmployee=async(req:Request,res:Response)=>{
         const id =Number(req.params.id)
-        const {email,name}=req.body
-        await this.employeeService.updateEmployee(id,email,name)
+        const {email,name,role}=req.body
+        await this.employeeService.updateEmployee(id,email,name,role)
         res.status(200).send()
     }
 

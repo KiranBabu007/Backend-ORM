@@ -19,7 +19,7 @@ class EmployeeService {
     constructor(employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-    createEmployee(email, name, age, address, password) {
+    createEmployee(email, name, age, address, password, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const newAddress = new address_entity_1.default();
             newAddress.line1 = address.line1;
@@ -27,7 +27,8 @@ class EmployeeService {
             const newEmployee = new employee_entity_1.default();
             newEmployee.address = newAddress;
             newEmployee.email = email;
-            newEmployee.name = name;
+            newEmployee.name = name,
+                newEmployee.role = role;
             newEmployee.age = age;
             newEmployee.password = yield bcrypt_1.default.hash(password, 10);
             return this.employeeRepository.create(newEmployee);
@@ -48,12 +49,13 @@ class EmployeeService {
             return this.employeeRepository.findByEmail(email);
         });
     }
-    updateEmployee(id, email, name) {
+    updateEmployee(id, email, name, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const existingEmployee = yield this.employeeRepository.findById(id);
             if (existingEmployee) {
                 existingEmployee.name = name || existingEmployee.name;
                 existingEmployee.email = email || existingEmployee.email;
+                existingEmployee.role = role || existingEmployee.role;
                 yield this.employeeRepository.update(id, existingEmployee);
             }
         });
