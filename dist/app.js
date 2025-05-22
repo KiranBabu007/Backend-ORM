@@ -18,11 +18,13 @@ const loggerMiddleware_1 = __importDefault(require("./middlewares/loggerMiddlewa
 const data_source_1 = __importDefault(require("./db/data-source"));
 const errorMiddleware_1 = __importDefault(require("./middlewares/errorMiddleware"));
 const department_router_1 = __importDefault(require("./routes/department.router"));
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const server = (0, express_1.default)();
 server.use(express_1.default.json());
 server.use(loggerMiddleware_1.default);
 server.use("/employee", employee_router_1.default);
 server.use('/department', department_router_1.default);
+server.use('/auth', auth_routes_1.default);
 server.use(errorMiddleware_1.default);
 server.get("/", (req, res) => {
     console.log(req.url);
@@ -37,8 +39,8 @@ server.get("/", (req, res) => {
         console.error("Failed to connect to DB");
         process.exit(1);
     }
-    server.listen(3000, () => {
-        console.log("server listening to 3000");
+    server.listen(3003, () => {
+        console.log("server listening to 3003");
     });
 }))();
 //# sourceMappingURL=app.js.map

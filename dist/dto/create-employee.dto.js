@@ -36,4 +36,10 @@ __decorate([
     (0, class_transformer_1.Type)(() => create_address_dto_1.CreateAddressDto),
     __metadata("design:type", create_address_dto_1.CreateAddressDto)
 ], CreateEmployeeDto.prototype, "address", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(5),
+    __metadata("design:type", String)
+], CreateEmployeeDto.prototype, "password", void 0);
 //# sourceMappingURL=create-employee.dto.js.map

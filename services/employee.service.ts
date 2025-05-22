@@ -2,13 +2,14 @@ import { CreateAddressDto } from "../dto/create-address.dto";
 import Address from "../entities/address.entity";
 import Employee from "../entities/employee.entity";
 import EmployeeRepository from "../repositories/employee.repository";
+import bcrypt from 'bcrypt'
 
 
 class EmployeeService {
     constructor(private employeeRepository: EmployeeRepository) {
     }
 
-    async createEmployee(email:string,name:string,age:number,address:CreateAddressDto): Promise<Employee> {
+    async createEmployee(email:string,name:string,age:number,address:CreateAddressDto,password:string): Promise<Employee> {
 
         const newAddress= new Address()
         newAddress.line1=address.line1
@@ -18,6 +19,7 @@ class EmployeeService {
         newEmployee.email=email
         newEmployee.name=name
         newEmployee.age=age
+        newEmployee.password=await bcrypt.hash(password,10)
         
         return this.employeeRepository.create(newEmployee)
     }
@@ -28,6 +30,10 @@ class EmployeeService {
 
     async getEmployeeById(id:number):Promise<Employee>{
         return this.employeeRepository.findById(id)
+    }
+
+    async getEmployeeByEmail(email:string):Promise<Employee>{
+        return this.employeeRepository.findByEmail(email)
     }
 
     async updateEmployee(id:number,email:string,name:string){

@@ -14,11 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const address_entity_1 = __importDefault(require("../entities/address.entity"));
 const employee_entity_1 = __importDefault(require("../entities/employee.entity"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 class EmployeeService {
     constructor(employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-    createEmployee(email, name, age, address) {
+    createEmployee(email, name, age, address, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const newAddress = new address_entity_1.default();
             newAddress.line1 = address.line1;
@@ -28,6 +29,7 @@ class EmployeeService {
             newEmployee.email = email;
             newEmployee.name = name;
             newEmployee.age = age;
+            newEmployee.password = yield bcrypt_1.default.hash(password, 10);
             return this.employeeRepository.create(newEmployee);
         });
     }
@@ -39,6 +41,11 @@ class EmployeeService {
     getEmployeeById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.employeeRepository.findById(id);
+        });
+    }
+    getEmployeeByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.employeeRepository.findByEmail(email);
         });
     }
     updateEmployee(id, email, name) {

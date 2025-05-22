@@ -15,6 +15,7 @@ class EmployeeController{
         router.get('/:id',this.getEmployeeById),
         router.put('/:id',this.updateEmployee)
         router.delete('/:id',this.deleteEmployee)
+
     }
 
      createEmployee=async (req:Request,res:Response,next:NextFunction)=>{
@@ -29,7 +30,8 @@ class EmployeeController{
         createEmployeeDto.email,
         createEmployeeDto.name,
         createEmployeeDto.age,
-        createEmployeeDto.address
+        createEmployeeDto.address,
+        createEmployeeDto.password
       );
       res.status(201).send(savedEmployee);
     } catch (error) {
