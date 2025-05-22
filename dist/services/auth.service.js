@@ -14,7 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const httpException_1 = __importDefault(require("../exception/httpException"));
+const constants_1 = require("../utils/constants");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class AuthService {
     constructor(employeeService) {
         this.employeeService = employeeService;
@@ -29,6 +31,15 @@ class AuthService {
             if (!isPasswordValid) {
                 throw new httpException_1.default(400, "Invalid Password");
             }
+            const payload = {
+                id: employee.id,
+                email: employee.email
+            };
+            const token = jsonwebtoken_1.default.sign(payload, constants_1.JWT_SECRET, { expiresIn: constants_1.JWT_VALIDITY });
+            return {
+                tokenType: "Bearer",
+                accessToken: token
+            };
         });
     }
 }

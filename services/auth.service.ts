@@ -1,6 +1,9 @@
+import { JwtPayload } from "../dto/jwt-payload";
 import HttpException from "../exception/httpException"
+import { JWT_SECRET, JWT_VALIDITY } from "../utils/constants";
 import EmployeeService from "./employee.service"
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
 
 export class AuthService{
  constructor(private employeeService:EmployeeService){
@@ -14,6 +17,17 @@ export class AuthService{
     const isPasswordValid=await bcrypt.compare(password,employee.password)
     if(!isPasswordValid){
         throw new HttpException(400,"Invalid Password")
+    }
+
+    const payload:JwtPayload ={
+        id:employee.id,
+        email: employee.email
+    }
+
+    const token =jwt.sign(payload,JWT_SECRET,{expiresIn:JWT_VALIDITY})
+    return {
+        tokenType:"Bearer",
+        accessToken:token
     }
 
  }

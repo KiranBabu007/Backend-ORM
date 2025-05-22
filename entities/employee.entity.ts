@@ -2,6 +2,15 @@ import {Column,Entity,JoinColumn,OneToOne,PrimaryGeneratedColumn } from 'typeorm
 import AbstractEntity from './abstract.entity';
 import Address from './address.entity';
 
+
+
+export enum EmployeeRole {
+  UI='UI',
+  UX='UX',
+  DEVELOPER='DEVELOPER',
+  HR = 'HR'
+}
+
 @Entity()
 class Employee extends AbstractEntity {
   @PrimaryGeneratedColumn()
@@ -26,6 +35,14 @@ class Employee extends AbstractEntity {
 
     @Column()
     password:string
+
+    @Column({
+      type:'enum',
+      enum:EmployeeRole,
+      default:EmployeeRole.DEVELOPER
+    })
+    role:EmployeeRole
+
 
   }
   

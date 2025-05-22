@@ -19,9 +19,9 @@ export class AuthController{
         throw new HttpException(400,"Email or password not given")
     }
 
-    await this.authService.login(email,password)
+    const auth=await this.authService.login(email,password)
 
-    res.status(200).send("Success")
+    res.status(200).send(auth)
     }catch(error){
         next(error)
     }

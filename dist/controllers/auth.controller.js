@@ -24,8 +24,8 @@ class AuthController {
                 if (!email || !password) {
                     throw new httpException_1.default(400, "Email or password not given");
                 }
-                yield this.authService.login(email, password);
-                res.status(200).send("Success");
+                const auth = yield this.authService.login(email, password);
+                res.status(200).send(auth);
             }
             catch (error) {
                 next(error);

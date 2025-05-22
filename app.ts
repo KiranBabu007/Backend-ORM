@@ -5,12 +5,13 @@ import datasource from "./db/data-source";
 import errorMiddleware from "./middlewares/errorMiddleware";
 import departmentRouter from "./routes/department.router";
 import authRouter from "./routes/auth.routes";
+import { authMiddleware } from "./middlewares/authMiddleware";
 
 const server = express();
 server.use(express.json());
 server.use(loggerMiddleware);
 
-server.use("/employee",employeeRouter);
+server.use("/employee",authMiddleware,employeeRouter);
 server.use('/department',departmentRouter)
 server.use('/auth',authRouter)
 server.use(errorMiddleware)
