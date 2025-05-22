@@ -23,6 +23,10 @@ class Employee extends AbstractEntity {
    
     @JoinColumn()
     address:Address
+
+    @Column()
+    password:string
+
   }
   
   export default Employee;

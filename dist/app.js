@@ -17,11 +17,12 @@ const employee_router_1 = __importDefault(require("./routes/employee.router"));
 const loggerMiddleware_1 = __importDefault(require("./middlewares/loggerMiddleware"));
 const data_source_1 = __importDefault(require("./db/data-source"));
 const errorMiddleware_1 = __importDefault(require("./middlewares/errorMiddleware"));
-const { Client } = require('pg');
+const department_router_1 = __importDefault(require("./routes/department.router"));
 const server = (0, express_1.default)();
 server.use(express_1.default.json());
 server.use(loggerMiddleware_1.default);
 server.use("/employee", employee_router_1.default);
+server.use('/department', department_router_1.default);
 server.use(errorMiddleware_1.default);
 server.get("/", (req, res) => {
     console.log(req.url);
@@ -36,7 +37,7 @@ server.get("/", (req, res) => {
         console.error("Failed to connect to DB");
         process.exit(1);
     }
-    server.listen(3003, () => {
+    server.listen(3000, () => {
         console.log("server listening to 3000");
     });
 }))();

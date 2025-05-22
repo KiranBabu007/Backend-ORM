@@ -26,18 +26,18 @@ class DepartmentController{
     }
 
     getAllDepartments=async(req:Request,res:Response)=>{
-        const employees=await this.departmentService.getAllDepartments()
-        res.status(201).send(employees)
+        const departments=await this.departmentService.getAllDepartments()
+        res.status(201).send(departments)
     }
 
     getDepartmentById=async(req:Request,res:Response,next:NextFunction)=>{
         try{
             const id =Number(req.params.id)
-        const employee=await this.departmentService.getDepartmentById(id)
-        if(!employee){
+        const department=await this.departmentService.getDepartmentById(id)
+        if(!department){
             throw new HttpException(400,'Employee not found')
         }
-        res.status(201).send(employee)
+        res.status(201).send(department)
         }
         catch(err){
             console.error('Error:',err)
@@ -45,8 +45,6 @@ class DepartmentController{
         }
         
     }
-
-    
 
     updateDepartment=async(req:Request,res:Response)=>{
         const id =Number(req.params.id)

@@ -3,14 +3,14 @@ import employeeRouter from "./routes/employee.router"
 import loggerMiddleware from "./middlewares/loggerMiddleware";
 import datasource from "./db/data-source";
 import errorMiddleware from "./middlewares/errorMiddleware";
-
-const { Client } = require('pg');
+import departmentRouter from "./routes/department.router";
 
 const server = express();
 server.use(express.json());
 server.use(loggerMiddleware);
 
 server.use("/employee",employeeRouter);
+server.use('/department',departmentRouter)
 server.use(errorMiddleware)
 
 server.get("/", (req, res) => {
@@ -28,7 +28,7 @@ server.get("/", (req, res) => {
     process.exit(1);
   }
 
-  server.listen(3003, () => {
+  server.listen(3000, () => {
   console.log("server listening to 3000");
 });
 })();
