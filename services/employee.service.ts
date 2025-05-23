@@ -1,15 +1,22 @@
 import { CreateAddressDto } from "../dto/create-address.dto";
 import Address from "../entities/address.entity";
-import Employee, { EmployeeRole } from "../entities/employee.entity";
+import Employee, { EmployeeRole, EmployeeStatus } from "../entities/employee.entity";
 import EmployeeRepository from "../repositories/employee.repository";
 import bcrypt from 'bcrypt'
+import { LoggerService } from "./loggerservice";
+import DepartmentRepository from "../repositories/department.repository";
+import DepartmentService from "./department.service";
+import { CreateEmployeeDto } from "../dto/create-employee.dto";
 
 
 class EmployeeService {
-    constructor(private employeeRepository: EmployeeRepository) {
+    private logger=LoggerService.getInstance(EmployeeService.name)
+    constructor(private employeeRepository: EmployeeRepository,private departmentService:DepartmentService) {
     }
 
-    async createEmployee(email:string,name:string,age:number,address:CreateAddressDto,password:string,role:EmployeeRole): Promise<Employee> {
+    async createEmployee(createEmployeeDto:CreateEmployeeDto): Promise<Employee> {
+
+        const {email,employeeId,name,role,age,dateOfJoining,experience,status,password,departmentId,address} = createEmployeeDto
 
         const newAddress= new Address()
         newAddress.line1=address.line1
@@ -17,10 +24,17 @@ class EmployeeService {
         const newEmployee= new Employee();
         newEmployee.address=newAddress
         newEmployee.email=email
+        newEmployee.employeeId=employeeId
         newEmployee.name=name,
         newEmployee.role=role
         newEmployee.age=age
+        newEmployee.dateOfJoining=dateOfJoining
+        newEmployee.experience=experience
+        newEmployee.status=status
         newEmployee.password=await bcrypt.hash(password,10)
+        const department=await this.departmentService.getDepartmentById(departmentId)
+        newEmployee.department=department
+        
         
         return this.employeeRepository.create(newEmployee)
     }

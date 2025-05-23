@@ -1,10 +1,10 @@
 import Department from "../entities/department.entity";
 import DepartmentRepository from "../repositories/department.repository";
-
-
+import { LoggerService } from "./loggerservice";
 
 
 class DepartmentService{
+    
     constructor(private departmentRepository:DepartmentRepository){}
 
     async createDepartment(name:string){
@@ -35,8 +35,9 @@ class DepartmentService{
 
     async deleteDepartment(id:number){     
         await this.departmentRepository.delete(id)
-
     }
+
+
 
     
         

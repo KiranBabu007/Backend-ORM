@@ -5,18 +5,14 @@ import EmployeeRepository from "../repositories/employee.repository";
 import Employee from "../entities/employee.entity";
 import EmployeeService from "../services/employee.service";
 import { AuthController } from "../controllers/auth.controller";
+import { employeeService } from "./employee.router";
 
 
 
 const authRouter= Router();
 
-const repository=datasource.getRepository(Employee)
-const employeeRepository= new EmployeeRepository(repository)
-const employeeService = new EmployeeService(employeeRepository)
 
-const authService = new AuthService(employeeService)
-
-
+const authService=new AuthService(employeeService)
 new AuthController(authService,authRouter)
 
 export default authRouter

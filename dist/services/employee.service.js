@@ -15,22 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const address_entity_1 = __importDefault(require("../entities/address.entity"));
 const employee_entity_1 = __importDefault(require("../entities/employee.entity"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const loggerservice_1 = require("./loggerservice");
 class EmployeeService {
-    constructor(employeeRepository) {
+    constructor(employeeRepository, departmentService) {
         this.employeeRepository = employeeRepository;
+        this.departmentService = departmentService;
+        this.logger = loggerservice_1.LoggerService.getInstance(EmployeeService.name);
     }
-    createEmployee(email, name, age, address, password, role) {
+    createEmployee(createEmployeeDto) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { email, employeeId, name, role, age, dateOfJoining, experience, status, password, departmentId, address } = createEmployeeDto;
             const newAddress = new address_entity_1.default();
             newAddress.line1 = address.line1;
             newAddress.pincode = Number(address.pincode);
             const newEmployee = new employee_entity_1.default();
             newEmployee.address = newAddress;
             newEmployee.email = email;
+            newEmployee.employeeId = employeeId;
             newEmployee.name = name,
                 newEmployee.role = role;
             newEmployee.age = age;
+            newEmployee.dateOfJoining = dateOfJoining;
+            newEmployee.experience = experience;
+            newEmployee.status = status;
             newEmployee.password = yield bcrypt_1.default.hash(password, 10);
+            const department = yield this.departmentService.getDepartmentById(departmentId);
+            newEmployee.department = department;
             return this.employeeRepository.create(newEmployee);
         });
     }
@@ -41,7 +51,11 @@ class EmployeeService {
     }
     getEmployeeById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.employeeRepository.findById(id);
+            let employee = yield this.employeeRepository.findById(id);
+            if (!employee) {
+                throw new Error("Employee not found");
+            }
+            return employee;
         });
     }
     getEmployeeByEmail(email) {

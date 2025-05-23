@@ -4,10 +4,14 @@ import loggerMiddleware from "./middlewares/loggerMiddleware";
 import datasource from "./db/data-source";
 import errorMiddleware from "./middlewares/errorMiddleware";
 import departmentRouter from "./routes/department.router";
-import authRouter from "./routes/auth.routes";
+
 import { authMiddleware } from "./middlewares/authMiddleware";
+import { LoggerService } from "./services/loggerservice";
+import authRouter from "./routes/auth.routes";
 
 const server = express();
+
+const logger = LoggerService.getInstance('app()');
 server.use(express.json());
 server.use(loggerMiddleware);
 
@@ -26,12 +30,13 @@ server.get("/", (req, res) => {
   try{
     await datasource.initialize();
     console.log("Connected")
+    server.listen(3000, () => {
+    console.log("server listening to 3003");
+});
   }catch{
     console.error("Failed to connect to DB")
     process.exit(1);
   }
 
-  server.listen(3003, () => {
-  console.log("server listening to 3003");
-});
+  
 })();

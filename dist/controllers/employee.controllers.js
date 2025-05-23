@@ -12,14 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const employee_service_1 = __importDefault(require("../services/employee.service"));
 const httpException_1 = __importDefault(require("../exception/httpException"));
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const create_employee_dto_1 = require("../dto/create-employee.dto");
 const authorizationMiddleware_1 = require("../middlewares/authorizationMiddleware");
+const employee_entity_1 = require("../entities/employee.entity");
+const loggerservice_1 = require("../services/loggerservice");
 class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
+        this.logger = loggerservice_1.LoggerService.getInstance(employee_service_1.default.name);
         this.createEmployee = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const createEmployeeDto = (0, class_transformer_1.plainToInstance)(create_employee_dto_1.CreateEmployeeDto, req.body);
@@ -28,7 +32,8 @@ class EmployeeController {
                     console.log(JSON.stringify(errors));
                     throw new httpException_1.default(400, JSON.stringify(errors));
                 }
-                const savedEmployee = yield this.employeeService.createEmployee(createEmployeeDto.email, createEmployeeDto.name, createEmployeeDto.age, createEmployeeDto.address, createEmployeeDto.password, createEmployeeDto.role);
+                const savedEmployee = yield this.employeeService.createEmployee(createEmployeeDto);
+                this.logger.info("Employee Created--");
                 res.status(201).send(savedEmployee);
             }
             catch (error) {
@@ -37,6 +42,7 @@ class EmployeeController {
         });
         this.getAllEmployees = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const employees = yield this.employeeService.getAllEmployees();
+            this.logger.info("Employees Fetched--");
             res.status(201).send(employees);
         });
         this.getEmployeeById = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
@@ -46,6 +52,7 @@ class EmployeeController {
                 if (!employee) {
                     throw new httpException_1.default(400, 'Employee not found');
                 }
+                this.logger.info("Employee Fetched By Id--");
                 res.status(201).send(employee);
             }
             catch (err) {
@@ -53,22 +60,39 @@ class EmployeeController {
                 next(err);
             }
         });
-        this.updateEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const id = Number(req.params.id);
-            const { email, name, role } = req.body;
-            yield this.employeeService.updateEmployee(id, email, name, role);
-            res.status(200).send();
+        this.updateEmployee = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = Number(req.params.id);
+                const { email, name, role } = req.body;
+                if (!email || !name || !role || !id) {
+                    throw new httpException_1.default(400, "Input incorrect");
+                }
+                yield this.employeeService.updateEmployee(id, email, name, role);
+                this.logger.info("Employee Updated--");
+                res.status(200).send();
+            }
+            catch (err) {
+                next(err);
+            }
         });
         this.deleteEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const id = Number(req.params.id);
-            yield this.employeeService.deleteEmployee(id);
-            res.status(200).send();
+            try {
+                const id = Number(req.params.id);
+                if (!id) {
+                    throw new httpException_1.default(400, "id not given");
+                }
+                yield this.employeeService.deleteEmployee(id);
+                this.logger.info("Employee Deleted--");
+                res.status(200).send();
+            }
+            catch (err) {
+            }
         });
-        router.get('/', authorizationMiddleware_1.authorizationMiddleware, this.getAllEmployees),
-            router.post('/', authorizationMiddleware_1.authorizationMiddleware, this.createEmployee),
-            router.get('/:id', authorizationMiddleware_1.authorizationMiddleware, this.getEmployeeById),
-            router.put('/:id', authorizationMiddleware_1.authorizationMiddleware, this.updateEmployee);
-        router.delete('/:id', authorizationMiddleware_1.authorizationMiddleware, this.deleteEmployee);
+        router.get('/', (0, authorizationMiddleware_1.authorizationMiddleware)([employee_entity_1.EmployeeRole.HR, employee_entity_1.EmployeeRole.DEVELOPER]), this.getAllEmployees),
+            router.post('/', (0, authorizationMiddleware_1.authorizationMiddleware)([employee_entity_1.EmployeeRole.HR, employee_entity_1.EmployeeRole.DEVELOPER]), this.createEmployee),
+            router.get('/:id', this.getEmployeeById),
+            router.put('/:id', this.updateEmployee);
+        router.delete('/:id', this.deleteEmployee);
     }
 }
 exports.default = EmployeeController;

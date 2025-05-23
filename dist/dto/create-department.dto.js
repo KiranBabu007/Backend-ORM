@@ -8,25 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typeorm_1 = require("typeorm");
-const abstract_entity_1 = __importDefault(require("./abstract.entity"));
-const employee_entity_1 = __importDefault(require("./employee.entity"));
-let Department = class Department extends abstract_entity_1.default {
-};
+exports.createDepartmentDto = void 0;
+const class_validator_1 = require("class-validator");
+class createDepartmentDto {
+}
+exports.createDepartmentDto = createDepartmentDto;
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], Department.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => employee_entity_1.default, (employee) => employee.department, { cascade: true }),
-    __metadata("design:type", Array)
-], Department.prototype, "employees", void 0);
-Department = __decorate([
-    (0, typeorm_1.Entity)()
-], Department);
-exports.default = Department;
-//# sourceMappingURL=department.entity.js.map
+], createDepartmentDto.prototype, "name", void 0);
+//# sourceMappingURL=create-department.dto.js.map

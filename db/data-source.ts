@@ -1,7 +1,8 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
-import 'dotend/config'
+import 'dotenv/config'
+
 
 
 const datasource=new DataSource({
