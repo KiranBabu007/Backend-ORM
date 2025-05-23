@@ -9,6 +9,12 @@ class Address extends AbstractEntity {
 
     @Column()
     line1:string;
+
+    @Column()
+    line2:string
+
+    @Column()
+    houseNo:number
     
     @Column()
     pincode:number;
@@ -18,6 +24,8 @@ class Address extends AbstractEntity {
     })
     @JoinColumn()
     employee: Employee;
+
+
 
 }
 

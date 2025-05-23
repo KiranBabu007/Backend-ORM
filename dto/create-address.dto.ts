@@ -8,4 +8,11 @@ export class CreateAddressDto {
   @IsNotEmpty()
   @IsNumber()
   pincode: number;
+
+  @IsNumber()
+  houseNo:number;
+
+  @IsString()
+  line2:string
+
 }

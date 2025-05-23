@@ -21,6 +21,8 @@ class EmployeeService {
         const newAddress= new Address()
         newAddress.line1=address.line1
         newAddress.pincode=Number(address.pincode)
+        newAddress.line2=address.line2
+        newAddress.houseNo=address.houseNo
         const newEmployee= new Employee();
         newEmployee.address=newAddress
         newEmployee.email=email

@@ -28,6 +28,8 @@ class EmployeeService {
             const newAddress = new address_entity_1.default();
             newAddress.line1 = address.line1;
             newAddress.pincode = Number(address.pincode);
+            newAddress.line2 = address.line2;
+            newAddress.houseNo = address.houseNo;
             const newEmployee = new employee_entity_1.default();
             newEmployee.address = newAddress;
             newEmployee.email = email;

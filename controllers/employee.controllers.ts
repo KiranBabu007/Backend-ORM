@@ -32,7 +32,6 @@ class EmployeeController{
       }
       const savedEmployee = await this.employeeService.createEmployee(
         createEmployeeDto
-
       );
       this.logger.info("Employee Created--")
       res.status(201).send(savedEmployee);
