@@ -20,6 +20,7 @@ const create_employee_dto_1 = require("../dto/create-employee.dto");
 const authorizationMiddleware_1 = require("../middlewares/authorizationMiddleware");
 const employee_entity_1 = require("../entities/employee.entity");
 const loggerservice_1 = require("../services/loggerservice");
+const update_employee_dto_1 = require("../dto/update-employee.dto");
 class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
@@ -63,11 +64,14 @@ class EmployeeController {
         this.updateEmployee = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = Number(req.params.id);
-                const { email, name, role } = req.body;
-                if (!email || !name || !role || !id) {
-                    throw new httpException_1.default(400, "Input incorrect");
+                const updateEmployeeDto = (0, class_transformer_1.plainToInstance)(update_employee_dto_1.UpdateEmployeeDto, req.body);
+                updateEmployeeDto.id = id;
+                const errors = yield (0, class_validator_1.validate)(updateEmployeeDto);
+                if (errors.length > 0) {
+                    console.log(JSON.stringify(errors));
+                    throw new httpException_1.default(400, JSON.stringify(errors));
                 }
-                yield this.employeeService.updateEmployee(id, email, name, role);
+                yield this.employeeService.updateEmployee(updateEmployeeDto);
                 this.logger.info("Employee Updated--");
                 res.status(200).send();
             }

@@ -1,58 +1,48 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsString, MinLength, ValidateNested } from "class-validator";
-import { CreateAddressDto } from "./create-address.dto";
-import { Type } from "class-transformer";
-import Employee, { EmployeeRole, EmployeeStatus } from "../entities/employee.entity";
-import { Column } from "typeorm";
-import { createDepartmentDto } from "./create-department.dto";
+import { IsEmail, IsEnum, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
+import { EmployeeRole, EmployeeStatus } from "../entities/employee.entity";
 
 export class UpdateEmployeeDto {
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  employeeId:string
-
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsNotEmpty()
   @IsNumber()
-  age: number;
+  id: number;
+  
+  @IsOptional()
+  @IsEmail()
+  email?: string;
 
-  @ValidateNested()
-  @Type(() => CreateAddressDto)
-  address: CreateAddressDto; 
+  @IsOptional()
+  @IsString()
+  employeeId?: string;
 
+  @IsOptional()
+  @IsString()
+  name?: string;
 
-  @ValidateNested()
-  @Type(() => createDepartmentDto)
-  department: createDepartmentDto;
+  @IsOptional()
+  @IsNumber()
+  age?: number;
 
-@IsNotEmpty()
-@IsNumber()
-departmentId: number;
+  @IsOptional()
+  @IsNumber()
+  departmentId?: number;
 
-
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MinLength(5)
-  password:string
+  password?: string;
 
+  @IsOptional()
+  @IsEnum(EmployeeRole)
+  role?: EmployeeRole;
 
-@IsEnum(EmployeeRole)
-role: EmployeeRole
+  @IsOptional()
+  @IsEnum(EmployeeStatus)
+  status?: EmployeeStatus;
 
-@IsEnum(EmployeeStatus)
-status: EmployeeStatus
+  @IsOptional()
+  dateOfJoining?: Date;
 
-
-dateOfJoining:Date
-
-@IsNumber()
-experience:number
-
-
+  @IsOptional()
+  @IsNumber()
+  experience?: number;
 }
 

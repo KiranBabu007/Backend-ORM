@@ -37,7 +37,7 @@ server.get("/", (req, res) => {
     try {
         yield data_source_1.default.initialize();
         console.log("Connected");
-        server.listen(3000, () => {
+        server.listen(3003, () => {
             console.log("server listening to 3003");
         });
     }

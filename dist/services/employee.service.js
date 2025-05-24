@@ -65,15 +65,36 @@ class EmployeeService {
             return this.employeeRepository.findByEmail(email);
         });
     }
-    updateEmployee(id, email, name, role) {
+    updateEmployee(updateEmployeeDto) {
         return __awaiter(this, void 0, void 0, function* () {
-            const existingEmployee = yield this.employeeRepository.findById(id);
-            if (existingEmployee) {
-                existingEmployee.name = name || existingEmployee.name;
-                existingEmployee.email = email || existingEmployee.email;
-                existingEmployee.role = role || existingEmployee.role;
-                yield this.employeeRepository.update(id, existingEmployee);
+            const existingEmployee = yield this.employeeRepository.findById(updateEmployeeDto.id);
+            if (!existingEmployee) {
+                throw new Error("Employee not found");
             }
+            const id = updateEmployeeDto.id;
+            const { name, email, role, employeeId, age, status, dateOfJoining, experience, departmentId } = updateEmployeeDto;
+            if (name !== undefined)
+                existingEmployee.name = name;
+            if (email !== undefined)
+                existingEmployee.email = email;
+            if (role !== undefined)
+                existingEmployee.role = role;
+            if (employeeId !== undefined)
+                existingEmployee.employeeId = employeeId;
+            if (age !== undefined)
+                existingEmployee.age = age;
+            if (experience !== undefined)
+                existingEmployee.experience = experience;
+            if (status !== undefined)
+                existingEmployee.status = status;
+            if (dateOfJoining !== undefined)
+                existingEmployee.dateOfJoining = dateOfJoining;
+            if (departmentId !== undefined) {
+                const department = yield this.departmentService.getDepartmentById(departmentId);
+                existingEmployee.department = department;
+            }
+            yield this.employeeRepository.update(id, existingEmployee);
+            return existingEmployee;
         });
     }
     deleteEmployee(id) {

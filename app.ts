@@ -30,7 +30,7 @@ server.get("/", (req, res) => {
   try{
     await datasource.initialize();
     console.log("Connected")
-    server.listen(3000, () => {
+    server.listen(3003, () => {
     console.log("server listening to 3003");
 });
   }catch{

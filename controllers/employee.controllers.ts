@@ -9,6 +9,7 @@ import { CreateEmployeeDto } from "../dto/create-employee.dto"
 import { authorizationMiddleware } from "../middlewares/authorizationMiddleware"
 import { EmployeeRole } from "../entities/employee.entity"
 import { LoggerService } from "../services/loggerservice"
+import { UpdateEmployeeDto} from "../dto/update-employee.dto"
 
 
 class EmployeeController{
@@ -69,14 +70,17 @@ class EmployeeController{
 
     updateEmployee=async(req:Request,res:Response,next:NextFunction)=>{
         try{
-const id =Number(req.params.id)
-        const {email,name,role}=req.body
+        const id =Number(req.params.id)
+         const updateEmployeeDto = plainToInstance(UpdateEmployeeDto, req.body);
+         updateEmployeeDto.id=id
+      const errors = await validate(updateEmployeeDto);
+      if (errors.length > 0) {
+        console.log(JSON.stringify(errors));
+        throw new HttpException(400, JSON.stringify(errors));
+      }
 
-        if(!email||!name||!role||!id){
-            throw new HttpException(400,"Input incorrect")
-        }
 
-        await this.employeeService.updateEmployee(id,email,name,role)
+        await this.employeeService.updateEmployee(updateEmployeeDto)
         this.logger.info("Employee Updated--")
         res.status(200).send()
 
