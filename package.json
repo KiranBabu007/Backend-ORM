@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "test-coverage": "jest --coverage",
     "start": "node app.js",
     "build": "rm -rf dist &&  npx tsc",
@@ -23,6 +23,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/keyvaluesoftwaresystems/nodejs-training-2025#readme",
   "dependencies": {
+    "@testcontainers/postgresql": "^10.28.0",
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.21",
     "bcrypt": "^6.0.0",
