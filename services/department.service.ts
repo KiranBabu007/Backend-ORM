@@ -1,4 +1,5 @@
 import Department from "../entities/department.entity";
+import HttpException from "../exception/httpException";
 import DepartmentRepository from "../repositories/department.repository";
 import { LoggerService } from "./loggerservice";
 
@@ -8,11 +9,17 @@ class DepartmentService{
     constructor(private departmentRepository:DepartmentRepository){}
 
     async createDepartment(name:string){
-        const newDept=new Department()
+        
+            const newDept=new Department()
+            if(!newDept){
+                throw new HttpException(400,"Department not created")
+            }
 
         newDept.name=name
 
         return this.departmentRepository.create(newDept)
+        
+        
 
     }
 
