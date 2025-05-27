@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1748361370074" clover="3.2.0">
-  <project timestamp="1748361370075" name="All files">
-    <metrics statements="554" coveredstatements="129" conditionals="55" coveredconditionals="10" methods="114" coveredmethods="26" elements="723" coveredelements="165" complexity="0" loc="554" ncloc="554" packages="13" files="36" classes="36"/>
+<coverage generated="1748362522105" clover="3.2.0">
+  <project timestamp="1748362522105" name="All files">
+    <metrics statements="554" coveredstatements="133" conditionals="55" coveredconditionals="10" methods="114" coveredmethods="30" elements="723" coveredelements="173" complexity="0" loc="554" ncloc="554" packages="13" files="36" classes="36"/>
     <package name="session-05-starter">
       <metrics statements="74" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="15" coveredmethods="0"/>
       <file name="app.ts" path="/home/ll-kv-kirababu/Documents/Training/session-05-starter/app.ts">
@@ -488,7 +488,7 @@
       </file>
     </package>
     <package name="session-05-starter.repositories">
-      <metrics statements="16" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="14" coveredmethods="3"/>
+      <metrics statements="16" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="14" coveredmethods="7"/>
       <file name="department.repository.ts" path="/home/ll-kv-kirababu/Documents/Training/session-05-starter/repositories/department.repository.ts">
         <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="6" count="0" type="stmt"/>
@@ -500,14 +500,14 @@
         <line num="30" count="0" type="stmt"/>
       </file>
       <file name="employee.repository.ts" path="/home/ll-kv-kirababu/Documents/Training/session-05-starter/repositories/employee.repository.ts">
-        <metrics statements="9" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="3"/>
+        <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="7"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
+        <line num="9" count="6" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
         <line num="45" count="1" type="stmt"/>
       </file>

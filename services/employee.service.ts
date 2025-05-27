@@ -91,7 +91,7 @@ class EmployeeService {
         if (employee) {
             await this.employeeRepository.remove(employee)
         }
-        // await this.employeeRepository.delete(id)
+        
 
     }
 }
