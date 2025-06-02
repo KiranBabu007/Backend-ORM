@@ -18,7 +18,10 @@ class EmployeeRepository{
     }
 
     async findById(id:number): Promise<Employee>{
-        return this.repository.findOneBy({id})
+        return this.repository.findOne({where:{id},relations:{
+            address:true,
+            department:true
+        }})
     }
 
     async findByEmail(email:string):Promise<Employee>{

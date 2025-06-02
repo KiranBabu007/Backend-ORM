@@ -29,7 +29,10 @@ class EmployeeRepository {
     }
     findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.findOneBy({ id });
+            return this.repository.findOne({ where: { id }, relations: {
+                    address: true,
+                    department: true
+                } });
         });
     }
     findByEmail(email) {

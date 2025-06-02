@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const department_entity_1 = __importDefault(require("../entities/department.entity"));
+const httpException_1 = __importDefault(require("../exception/httpException"));
 class DepartmentService {
     constructor(departmentRepository) {
         this.departmentRepository = departmentRepository;
@@ -20,6 +21,9 @@ class DepartmentService {
     createDepartment(name) {
         return __awaiter(this, void 0, void 0, function* () {
             const newDept = new department_entity_1.default();
+            if (!newDept) {
+                throw new httpException_1.default(400, "Department not created");
+            }
             newDept.name = name;
             return this.departmentRepository.create(newDept);
         });

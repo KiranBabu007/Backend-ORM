@@ -8,17 +8,19 @@ import departmentRouter from "./routes/department.router";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { LoggerService } from "./services/loggerservice";
 import authRouter from "./routes/auth.routes";
+import cors from "cors"
 
 const server = express();
 
 const logger = LoggerService.getInstance('app()');
 server.use(express.json());
 server.use(loggerMiddleware);
-
+server.use(cors())
 server.use("/employee",authMiddleware,employeeRouter);
 server.use('/department',departmentRouter)
 server.use('/auth',authRouter)
 server.use(errorMiddleware)
+
 
 server.get("/", (req, res) => {
   console.log(req.url);

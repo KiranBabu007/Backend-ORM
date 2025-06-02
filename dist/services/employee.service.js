@@ -103,7 +103,6 @@ class EmployeeService {
             if (employee) {
                 yield this.employeeRepository.remove(employee);
             }
-            // await this.employeeRepository.delete(id)
         });
     }
 }
