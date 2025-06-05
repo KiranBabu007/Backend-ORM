@@ -75,7 +75,6 @@ class EmployeeService {
         if (experience !== undefined) existingEmployee.experience = experience;
         if (status !== undefined) existingEmployee.status = status;
         if (dateOfJoining !== undefined) existingEmployee.dateOfJoining = dateOfJoining;
-
         if (departmentId !== undefined) {
         const department = await this.departmentService.getDepartmentById(departmentId);
         existingEmployee.department = department;
